@@ -1,0 +1,49 @@
+importqueries/statements:-
+val df = spark.read.option("header","true").option("inferSchema","true").csv("""C:\Users\jaiadb\Downloads\Bank_Customers.csv""")
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions._
+val spark=SparkSession.builder().appName("sparksprint").master("local[*]").getOrCreate()
+import spark.implicits._
+
+
+wealthques 6
+ val df6 = df.filter($"Margin" < 0.10).select("EstimatedSalary","Margin").orderBy("Margin").show()
+
+wealthques 7
+ val highSalaryByRiskAndRevenue = df.orderBy($"EstimatedSalary".desc).select("EstimatedSalary","Risk Profile","Rev
+enue")
+
+ val maleFemaleHighSalary = df.filter($"EstimatedSalary" > 100000).groupBy("Gender").count()
+
+ highSalaryByRiskAndRevenue.show(10,false)
+
+ maleFemaleHighSalary.show()
+
+wealthques 1
+
+ val re=df.groupBy("Gender").agg(sum("NumTransactions").alias("Total_Transactions"))
+
+ val tg=re.orderBy(desc("Total_Transactions")).limit(1)
+
+ re.show()
+
+ tg.show()
+
+
+wealth ques 9
+ al adhi=df.filter($"Risk Profile".isNotNull).groupBy("CustomerID","Risk Profile").agg(max("Net Assets")).show()
+
+wealth ques 4
+val j=df.groupBy("Age","Revenue").agg(sum("Portfolio Return").alias("totalreturns"),sum("Net Assets").alias("sumassets"))
+
+ val ja=j.orderBy(desc("sumassets")).limit(1)
+
+ja.show()
+
+wealth ques 10
+
+val jai=df.filter($"Country".isNotNull).groupBy("Country","Age").agg(max("Revenue").alias("max"),min("Risk Profile").alias("min ))
+
+val dab=jai.orderBy(desc("max"),asc("min"))
+
+val baap=dab.limit(1).show()
